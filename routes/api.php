@@ -17,4 +17,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/login', 'AuthController@login');
+Route::post('/register', 'AuthController@register');
+
+
 Route::get('/todos', 'TodosController@index');
+Route::post('/todos', 'TodosController@store');
+Route::patch('/todos/{todo}', 'TodosController@update');

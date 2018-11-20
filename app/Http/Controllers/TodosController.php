@@ -18,16 +18,6 @@ class TodosController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -35,7 +25,19 @@ class TodosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'user_id'=> 'required|integer',
+            'todo' => 'required|string',
+            'complete' => 'required|boolean'
+        ]);
+
+        $todo = Todo::create([
+            'user_id' => $request->user_id,
+            'todo' => $request->todo,
+            'complete' => $request->complete
+        ]);
+
+        return response($todo, 200);
     }
 
     /**
@@ -49,16 +51,6 @@ class TodosController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -67,9 +59,21 @@ class TodosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Todo $todo)
     {
-        //
+        $data = $request->validate([
+            'user_id'=> 'required|integer',
+            'todo' => 'required|string',
+            'complete' => 'required|boolean'
+        ]);
+
+        $todo->update([
+            'user_id' => $request->user_id,
+            'todo' => $request->todo,
+            'complete' => $request->complete
+        ]);
+
+        return response($todo, 200);
     }
 
     /**

@@ -40,4 +40,10 @@ return [
         ],
     ],
 
+    'passport' => [
+        'login_endpoint'  => env('TOKEN_LOGIN_ENDPOINT'),
+        'client_id'    => env('TOKEN_CLIENT_ID'),
+        'client_secret' => env('TOKEN_CLIENT_SECRET'),
+    ],
+
 ];
