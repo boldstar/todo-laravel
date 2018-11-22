@@ -23,8 +23,18 @@ class AuthController extends Controller
                     'password' => $request->password,
                     ]
                     ]);
+                    
+                    $token = $response->getBody();
 
-                    return $response->getBody();
+                    $data = json_decode($token, true);
+
+                    $user = User::where('email', $request->username)->with('role.rules')->get();
+
+                    $rules = $user->pluck('role')->collapse()->pluck('rules');
+
+                    $rules->put('access_token', $data['access_token']);
+
+                    return response()->json($rules);
                 } catch (\GuzzleHttp\Exception\BadResponseException $e) {
                     if ($e->getCode() === 400) {
                         return response()->json('Invalid Request. Please enter a username or a password.', $e->getCode());
@@ -33,6 +43,16 @@ class AuthController extends Controller
             }
             return response()->json('Something went wrong on the server.', $e->getCode());
         }
+    }
+
+    public function rules()
+    {
+        $user = User::where('id', auth()->user()->id)->with('role.rules')->get();
+
+        $rules = $user->pluck('role')->collapse()->pluck('rules');
+
+        return response($rules);
+
     }
     
     public function register(Request $request)

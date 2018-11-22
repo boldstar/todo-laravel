@@ -14,7 +14,7 @@ class TodosController extends Controller
      */
     public function index()
     {
-        return Todo::all();
+        return Todo::where('user_id', auth()->user()->id)->get();
     }
 
     /**
@@ -26,13 +26,12 @@ class TodosController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'user_id'=> 'required|integer',
             'todo' => 'required|string',
             'complete' => 'required|boolean'
         ]);
 
         $todo = Todo::create([
-            'user_id' => $request->user_id,
+            'user_id' => auth()->user()->id,
             'todo' => $request->todo,
             'complete' => $request->complete
         ]);
@@ -82,8 +81,10 @@ class TodosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Todo $todo)
     {
-        //
+        $todo->delete();
+
+        return response('Todo Is Deleted', 200);
     }
 }
