@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -72,8 +73,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $user->roles()->attach(Role::where('name', 'Admin')->first());
-        
+        $user->role()->attach(Role::where('name', 'Admin')->first());
+
         return response($user, 200);
     }
 
