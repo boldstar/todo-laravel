@@ -72,6 +72,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->roles()->attach(Role::where('name', 'Admin')->first());
+        
         return response($user, 200);
     }
 
