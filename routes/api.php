@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Exports\TodoExport;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +31,9 @@ Route::middleware('auth:api')->group(function() {
 Route::post('/login', 'AuthController@login');
 Route::post('/register', 'AuthController@register');
 
+Route::get('/download', function () {
+    return Excel::download(new TodoExport, 'todos.xlsx');
+});
+
+Route::post('/import', 'TodosController@importExcel');
 

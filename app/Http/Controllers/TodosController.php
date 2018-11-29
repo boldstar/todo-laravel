@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Todo;
 use Illuminate\Http\Request;
+use App\Imports\TodoImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TodosController extends Controller
 {
@@ -39,15 +41,18 @@ class TodosController extends Controller
         return response($todo, 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function importExcel(Request $request) 
     {
-        //
+
+        if (empty($request->file('file')->getRealPath())) {
+            return back()->with('success','No file selected');
+        }
+        else {
+        Excel::import(new TodoImport, $request->file('file'));
+   
+        return response('Import Succesful, Please Refresh Page');
+        }
+
     }
 
 
