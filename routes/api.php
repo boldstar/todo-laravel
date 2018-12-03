@@ -19,6 +19,8 @@ Route::middleware('auth:api')->group(function() {
         return $request->user();
     });
 
+    
+    Route::get('/userProfile', 'AuthController@show');
     Route::get('/rules', 'AuthController@rules');
     Route::get('/todos', 'TodosController@index');
     Route::post('/todos', 'TodosController@store');
@@ -31,9 +33,13 @@ Route::middleware('auth:api')->group(function() {
 Route::post('/login', 'AuthController@login');
 Route::post('/register', 'AuthController@register');
 
-Route::get('/download', function () {
-    return Excel::download(new TodoExport, 'todos.xlsx');
+Route::group([    
+    'namespace' => 'Auth',    
+    'middleware' => 'api',    
+    'prefix' => 'password'
+], function () {    
+    Route::post('create', 'PasswordResetController@create');
+    Route::get('find/{token}', 'PasswordResetController@find');
+    Route::post('reset', 'PasswordResetController@reset');
 });
-
-Route::post('/import', 'TodosController@importExcel');
 

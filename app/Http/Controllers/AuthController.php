@@ -55,6 +55,11 @@ class AuthController extends Controller
         return response($rules);
 
     }
+
+    public function show()
+    {
+        return User::where('id', auth()->user()->id)->with('role.rules')->get();
+    }
     
     public function register(Request $request)
     {
