@@ -46,16 +46,6 @@ class AuthController extends Controller
         }
     }
 
-    public function rules()
-    {
-        $user = User::where('id', auth()->user()->id)->with('role.rules')->get();
-
-        $rules = $user->pluck('role')->collapse()->pluck('rules');
-
-        return response($rules);
-
-    }
-
     public function show()
     {
         return User::where('id', auth()->user()->id)->with('role.rules')->get();
